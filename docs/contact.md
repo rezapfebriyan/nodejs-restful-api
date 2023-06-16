@@ -36,7 +36,7 @@ Response body failed :
 
 ## Update
 
-Endpoint : Put api/contacts/:id
+Endpoint : PUT api/contacts/:id
 Headers : 
 - Authorization : (token)
 

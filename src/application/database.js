@@ -1,22 +1,22 @@
 import { PrismaClient } from "@prisma/client"
-import { logger } from "./logging"
+import { logger } from "./logging.js"
 
 export const prismaClient = new PrismaClient({
     log: [
         {
-            emit: 'even',
+            emit: 'event',
             level: 'query'
         },
         {
-            emit: 'even',
+            emit: 'event',
             level: 'error'
         },
         {
-            emit: 'even',
+            emit: 'event',
             level: 'info'
         },
         {
-            emit: 'even',
+            emit: 'event',
             level: 'warn'
         }
     ]

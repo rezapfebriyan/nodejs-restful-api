@@ -72,11 +72,11 @@ describe('Register user', function () {
 describe('Login user', function () {
     beforeEach(async () => {
         await createTestUser()
-    });
+    })
 
     afterEach(async () => {
         await removeTestUser()
-    });
+    })
 
     it('should can login', async () => {
         const result = await supertest(web)
@@ -116,6 +116,35 @@ describe('Login user', function () {
             })
 
         logger.info(result.body)
+
+        expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined()
+    })
+})
+
+describe('Get current user', function () {
+    beforeEach(async () => {
+        await createTestUser()
+    })
+
+    afterEach(async () => {
+        await removeTestUser()
+    })
+
+    it('should can get current user', async () => {
+        const result = await supertest(web)
+            .get('/api/users/current')
+            .set('Authorization', 'test')
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.username).toBe('test')
+        expect(result.body.data.name).toBe('test')
+    })
+
+    it('should reject if invalid token', async () => {
+        const result = await supertest(web)
+            .get('/api/users/current')
+            .set('Authorization', 'wrong')
 
         expect(result.status).toBe(401)
         expect(result.body.errors).toBeDefined()

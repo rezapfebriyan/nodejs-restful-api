@@ -1,8 +1,9 @@
 import { prismaClient } from "../application/database.js"
 import { ResponseError } from "../error/responseError.js"
-import { registerUserValidation } from "../validation/userValidation.js"
+import { loginUserValidation, registerUserValidation } from "../validation/userValidation.js"
 import { validate } from "../validation/validation.js"
 import bcrypt from "bcrypt"
+import { v4 as uuid } from "uuid"
 
 const register = async (request) => {
     const user = validate(registerUserValidation, request)
@@ -29,4 +30,41 @@ const register = async (request) => {
     })
 }
 
-export default { register }
+const login = async (request) => {
+    const loginRequest = validate(loginUserValidation, request)
+
+    const user = await prismaClient.user.findUnique({
+        where: {
+            username: loginRequest.username
+        },
+        select: {
+            username: true,
+            password: true
+        }
+    })
+
+    if (!user) {
+        throw new ResponseError(401, "Invalid credentials")
+    }
+
+    const isPasswordValid = await bcrypt.compare(loginRequest.password, user.password)
+    if (!isPasswordValid) {
+        throw new ResponseError(401, "Invalid credentials")
+    }
+
+    const token = uuid().toString()
+
+    return prismaClient.user.update({
+        data: {
+            token: token
+        },
+        where: {
+            username: user.username
+        },
+        select: {
+            token: true
+        }
+    })
+}
+
+export default { register, login }

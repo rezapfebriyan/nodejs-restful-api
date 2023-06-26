@@ -1,6 +1,8 @@
 ## Node JS Restful API
 
-### Ini adalah Restful API menggunakan Node JS dengan bantuan Express JS dan database PostgreSQL
+### Database
+
+This service using "PostgreSQL" to stored data.
 
 *Source*: Programmer Zaman Now
 

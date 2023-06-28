@@ -88,7 +88,7 @@ const get = async (username) => {
 }
 
 const update = async (request) => {
-    user = validate(updateUserValidation, request)
+    const user = validate(updateUserValidation, request)
 
     const countUser = await prismaClient.user.count({
         where: {

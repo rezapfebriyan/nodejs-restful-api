@@ -1,7 +1,8 @@
 import supertest from "supertest"
 import { web } from "../src/application/web"
 import { logger } from "../src/application/logging"
-import { createTestUser, removeTestUser } from "./testUtil"
+import { createTestUser, getTestUser, removeTestUser } from "./testUtil"
+import bcrypt from "bcrypt"
 
 describe('Register user', function () {
     afterEach(async () => {
@@ -145,6 +146,59 @@ describe('Get current user', function () {
         const result = await supertest(web)
             .get('/api/users/current')
             .set('Authorization', 'wrong')
+
+        expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined()
+    })
+})
+
+describe('Update user', function () {
+    beforeEach(async () => {
+        await createTestUser()
+    })
+
+    afterEach(async () => {
+        await removeTestUser()
+    })
+
+    it('should can edit user', async () => {
+        const result = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', 'test')
+            .send({
+                name: "Reza",
+                password: "secretpassword"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.username).toBe("test")
+        expect(result.body.data.name).toBe("Reza")
+
+        const user = await getTestUser()
+        expect(await bcrypt.compare("secretpassword", user.password)).toBe(true)
+    })
+
+    it('should can edit user password only', async () => {
+        const result = await supertest(web)
+            .patch('/api/users/current')
+            .set('Authorization', 'test')
+            .send({
+                password: "secretpassword"
+            })
+
+        expect(result.status).toBe(200)
+        expect(result.body.data.username).toBe("test")
+        expect(result.body.data.name).toBe("test")
+
+        const user = await getTestUser()
+        expect(await bcrypt.compare("secretpassword", user.password)).toBe(true)
+    })
+
+    it('should reject if invalid request', async () => {
+        const result = await supertest(web)
+            .get('/api/users/current')
+            .set('Authorization', 'wrong')
+            .send({})
 
         expect(result.status).toBe(401)
         expect(result.body.errors).toBeDefined()

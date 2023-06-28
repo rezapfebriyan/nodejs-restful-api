@@ -204,3 +204,34 @@ describe('Update user', function () {
         expect(result.body.errors).toBeDefined()
     })
 })
+
+describe('Logout user', function () {
+    beforeEach(async () => {
+        await createTestUser()
+    })
+        
+    afterEach(async () => {
+        await removeTestUser()
+    })
+
+    it('should can logout', async () => {
+        const result = await supertest(web)
+            .delete('/api/users/logout')
+            .set('Authorization', 'test')
+        
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("Oke")
+
+        const user = await getTestUser()
+        expect(user.token).toBeNull()
+    })
+
+    it('should reject if invalid token', async () => {
+        const result = await supertest(web)
+            .delete('/api/users/logout')
+            .set('Authorization', 'wrong')
+        
+        expect(result.status).toBe(401)
+        expect(result.body.errors).toBeDefined()
+    })
+})

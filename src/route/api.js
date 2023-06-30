@@ -1,5 +1,5 @@
 import express from "express"
-import { authMiddleware } from "../middleware/auth"
+import { authMiddleware } from "../middleware/auth.js"
 import userController from "../controller/userController.js"
 import contactController from "../controller/contactController.js"
 
@@ -14,5 +14,6 @@ userRouter.delete('/api/users/logout', userController.logout)
 
 //         Contact
 userRouter.post('/api/contacts', contactController.create)
+userRouter.get('/api/contacts/:contactId', contactController.get)
 
 export { userRouter }

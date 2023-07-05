@@ -85,3 +85,69 @@ describe('Get contact by id', function () {
         expect(result.status).toBe(404)
     })
 })
+
+describe('Update contact', function () {
+    beforeEach(async () => {
+        await createTestUser()
+        await createTestContact()
+    })
+
+    afterEach(async () => {
+        await removeAllTestContact()
+        await removeTestUser()
+    })
+
+    it('should can update existing contact', async () => {
+        const testContact = await getTestContact()
+
+        const result = await supertest(web)
+            .put('/api/contacts/' + testContact.id)
+            .set('Authorization', 'test')
+            .send({
+                first_name: "Reza",
+                last_name: "Putra",
+                email: "rezapf@gmail.com",
+                phone: "087855447700"
+            })
+        
+        expect(result.status).toBe(200)
+        expect(result.body.data.id).toBe(testContact.id)
+        expect(result.body.data.first_name).toBe("Reza")
+        expect(result.body.data.last_name).toBe("Putra")
+        expect(result.body.data.email).toBe("rezapf@gmail.com")
+        expect(result.body.data.phone).toBe("087855447700")
+    })
+
+    it('should reject if invalid request', async () => {
+        const testContact = await getTestContact()
+
+        const result = await supertest(web)
+            .put('/api/contacts/' + testContact.id)
+            .set('Authorization', 'test')
+            .send({
+                first_name: "",
+                last_name: "",
+                email: "rezamail.com",
+                phone: 999
+            })
+        
+        expect(result.status).toBe(400)
+        expect(result.body.errors).toBeDefined()
+    })
+
+    it('should reject if contact is not found', async () => {
+
+        const result = await supertest(web)
+            .put('/api/contacts/99')
+            .set('Authorization', 'test')
+            .send({
+                first_name: "Reza",
+                last_name: "Putra",
+                email: "rezapf@gmail.com",
+                phone: "087855447700"
+            })
+        
+        expect(result.status).toBe(404)
+        expect(result.body.errors).toBeDefined()
+    })
+})

@@ -53,7 +53,7 @@ const remove = async (req, res, next) => {
         await contactService.remove(user, contactId)
 
         res.status(200).json({
-            data: "contact has been removed"
+            data: "Contact has been removed"
         })
     } catch (error) {
         next(error)

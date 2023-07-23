@@ -151,3 +151,30 @@ describe('Update contact', function () {
         expect(result.body.errors).toBeDefined()
     })
 })
+
+describe('Delete contact', function () {
+    beforeEach(async () => {
+        await createTestUser()
+        await createTestContact()
+    })
+
+    afterEach(async () => {
+        await removeAllTestContact()
+        await removeTestUser()
+    })
+
+    it('should can delete contact', async () => {
+        let testContact = await getTestContact()
+
+        const result = await supertest(web)
+            .delete('/api/contacts/' + testContact.id)
+            .set('Authorization', 'test')
+
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe('Contact has been removed')
+
+        // check removed or failed remove
+        testContact = await getTestContact()
+        expect(testContact).toBeNull()
+    })
+})

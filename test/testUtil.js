@@ -55,3 +55,17 @@ export const getTestContact = async () => {
         }
     })
 }
+
+export const createManyTestContact = async () => {
+    for (let index = 0; index < 10; index++) {
+        await prismaClient.contact.create({
+            data: {
+                username: "test",
+                first_name: `test ${index}`,
+                last_name: `test ${index}`,
+                email: `test${index}@email.com`,
+                phone: `087899889977| ${index}`
+            }
+        })
+    }
+}

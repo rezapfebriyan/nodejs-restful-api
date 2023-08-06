@@ -115,18 +115,15 @@ const search = async (user, request) => {
 
     if (request.name) {
         filter.push({
-            OR: [
-                {
+            OR: [ {
                     first_name: {
                         contains: request.name
                     }
-                },
-                {
+                },{
                     last_name: {
                         contains: request.name
                     }
-                }
-            ]
+                } ]
         })
     }
 
@@ -170,4 +167,10 @@ const search = async (user, request) => {
     }
 }
 
-export default { create, get, update, remove, search }
+export default {
+    create,
+    get,
+    update,
+    remove,
+    search
+}

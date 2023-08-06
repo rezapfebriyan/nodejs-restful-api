@@ -2,8 +2,9 @@
   "name": "nodejs-restful-api",
   "version": "1.0.0",
   "description": "Restful API by PZN",
-  "main": "src/index.js",
+  "main": "src/main.js",
   "scripts": {
+    "start": "node src/main.js",
     "test": "jest -i"
   },
   "jest": {

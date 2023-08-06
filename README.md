@@ -1,10 +1,17 @@
 ## Node JS Restful API
-
-### Database
-
-This service using "PostgreSQL" to stored data.
-
 *Source*: Programmer Zaman Now
 
-- Clone repo ini ke local computer anda
-- karena repo ini tidak include node_modules, jalankan perintah "npm install" untuk menginstall package yang diperlukan
+### Database
+This service using "PostgreSQL" to stored data, and prisma ORM.
+
+### Library
+- Joi validation
+- Winston logger
+- Jest testing
+
+### Getting Start Guide
+Clone this repo to your local computer.
+Run the command bellow to install package dependencies (get node_modules)
+```sh
+npm install
+```

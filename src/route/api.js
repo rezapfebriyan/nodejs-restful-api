@@ -2,6 +2,7 @@ import express from "express"
 import { authMiddleware } from "../middleware/auth.js"
 import userController from "../controller/userController.js"
 import contactController from "../controller/contactController.js"
+import addressController from "../controller/addressController.js"
 
 const userRouter = new express.Router()
 
@@ -18,5 +19,8 @@ userRouter.get('/api/contacts/:contactId', contactController.get)
 userRouter.put('/api/contacts/:contactId', contactController.update)
 userRouter.delete('/api/contacts/:contactId', contactController.remove)
 userRouter.get('/api/contacts', contactController.search)
+
+//          Address
+userRouter.post('/api/contacts/:contactId/addresses', addressController.create)
 
 export { userRouter }

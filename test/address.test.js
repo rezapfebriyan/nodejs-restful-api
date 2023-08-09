@@ -193,3 +193,42 @@ describe('Update contact address', function () {
         expect(result.body.errors).toBeDefined()
     })
 })
+
+describe('Delete contact address', function () {
+    beforeEach(async () => {
+        await createTestUser()
+        await createTestContact()
+        await createTestAddress()
+    })
+
+    afterEach(async () => {
+        await removeAllTestAddresses()
+        await removeAllTestContact()
+        await removeTestUser()
+    })
+
+    it('should can remove address', async () => {
+        const testContact = await getTestContact()
+        let testAddress = await getTestAddress()
+
+        const result = await supertest(web)
+            .delete('/api/contacts/' + testContact.id + '/addresses/' + testAddress.id)
+            .set('Authorization', 'test')
+
+        expect(result.status).toBe(200)
+        expect(result.body.data).toBe("Contact address has been removed")
+
+        testAddress = await getTestAddress()
+        expect(testAddress).toBeNull()
+    })
+
+    it('should reject if address (or contact) is not found', async () => {
+
+        const result = await supertest(web)
+            .delete('/api/contacts/99/addresses/99')
+            .set('Authorization', 'test')
+
+        expect(result.status).toBe(404)
+        expect(result.body.errors).toBeDefined()
+    })
+})

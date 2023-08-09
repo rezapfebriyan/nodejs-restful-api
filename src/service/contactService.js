@@ -9,7 +9,7 @@ import {
 import { validate } from "../validation/validation.js"
 
 const create = async (user, request) => {
-    const contact = validate(createContactValidation, request)
+    const contact = validate(createContactValidation, request) // all request data
     contact.username = user.username
 
     return prismaClient.contact.create({
@@ -49,7 +49,7 @@ const get = async (user, contactId) => {
 }
 
 const update = async (user, request) => {
-    const contact = validate(updateContactValidation, request)
+    const contact = validate(updateContactValidation, request) // all request data
 
     const countContact = await prismaClient.contact.count({
         where: {
@@ -104,7 +104,7 @@ const remove = async (user, contactId) => {
 }
 
 const search = async (user, request) => {
-    request = validate(searchContactValidation, request)
+    request = validate(searchContactValidation, request) // all request data
 
     const skip = (request.page - 1) * request.size
     const filter = []

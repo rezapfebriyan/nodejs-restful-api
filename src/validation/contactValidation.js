@@ -25,4 +25,9 @@ const searchContactValidation = Joi.object({
     phone: Joi.string().optional()
 })
 
-export { createContactValidation, getContactValidation, updateContactValidation, searchContactValidation }
+export {
+    createContactValidation,
+    getContactValidation,
+    updateContactValidation,
+    searchContactValidation
+}

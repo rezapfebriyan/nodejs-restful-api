@@ -67,5 +67,8 @@ const remove = async (req, res, next) => {
 }
 
 export default {
-    create, get, update, remove
+    create,
+    get,
+    update,
+    remove
 }

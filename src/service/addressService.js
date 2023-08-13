@@ -129,4 +129,9 @@ const remove = async (user, contactId, addressId) => {
     })
 }
 
-export default { create, get, update, remove }
+export default {
+    create,
+    get,
+    update,
+    remove
+}

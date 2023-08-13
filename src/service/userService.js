@@ -173,4 +173,10 @@ const logout = async (username) => {
     })
 }
 
-export default { register, login, get, update, logout }
+export default {
+    register,
+    login,
+    get,
+    update,
+    logout
+}
